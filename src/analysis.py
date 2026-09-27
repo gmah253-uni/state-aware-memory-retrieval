@@ -22,6 +22,9 @@ retrieved experience came from, not which task or experience). Outputs:
   results/retrieval_categories.csv  those retrievals grouped by same/other task and
                                     same/other preset with mean outcomes per group
   results/phrasing_similarity.csv   TF-IDF cosine between every pair of task phrasings
+  results/worst_case.txt            ranked candidates and action traces of the two worst
+                                    state-aware episodes (Sec. IV-D narrates the second)
+  results/timing.txt                cost of the state components and of one retrieval
 """
 
 from __future__ import annotations
@@ -68,14 +71,24 @@ def paired_tests(main: pd.DataFrame, a: str = "A_task_only", b: str = "B_state_a
             by_pool = frame.groupby("pool").d.mean()
             by_world = frame.groupby("world").d.mean()
             se = by_world.std(ddof=1) / np.sqrt(len(by_world))
+            # pool-level interval: the pool is the coarsest unit of dependence (t with n_pools-1 df)
+            if len(by_pool) >= 2:
+                se_pool = by_pool.std(ddof=1) / np.sqrt(len(by_pool))
+                tcrit = stats.t.ppf(0.975, len(by_pool) - 1)
+                ci_pool = (by_pool.mean() - tcrit * se_pool, by_pool.mean() + tcrit * se_pool)
+            else:
+                ci_pool = (np.nan, np.nan)
             rows.append(dict(preset=label, metric=m, n=len(d), mean_A=x.mean(), mean_B=y.mean(),
                              diff=d.mean(), share_B_better=np.mean(d > 0), share_equal=np.mean(d == 0),
                              share_A_better=np.mean(d < 0), paired_t=t, p_paired_t=p_t,
                              wilcoxon_W=w, p_wilcoxon=p_w,
                              **{f"diff_pool{int(k)}": v for k, v in by_pool.items()},
                              n_worlds=len(by_world), diff_worlds_mean=by_world.mean(),
-                             ci95_low=by_world.mean() - 1.96 * se, ci95_high=by_world.mean() + 1.96 * se))
-    return pd.DataFrame(rows).round(4)
+                             ci95_worlds_low=by_world.mean() - 1.96 * se, ci95_worlds_high=by_world.mean() + 1.96 * se,
+                             n_pools=len(by_pool), ci95_pools_low=ci_pool[0], ci95_pools_high=ci_pool[1]))
+    df = pd.DataFrame(rows)
+    # keep p-values at full precision; round everything else
+    return df.round({c: 4 for c in df.columns if df[c].dtype.kind == "f" and not c.startswith("p_")})
 
 
 def gap_by_task_preset(main: pd.DataFrame) -> pd.DataFrame:
@@ -138,6 +151,76 @@ def phrasing_similarity() -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
+# The narrated worst case of Sec. IV-D, and the cost of a retrieval
+# ---------------------------------------------------------------------------
+
+def worst_case(main: pd.DataFrame, config: str = "B_state_aware", k: int = 8, rank: int = 0) -> str:
+    """Re-run the logged episode of `config` with the (rank+1)-th largest excess and
+    return a text report: the ranked candidates of its first retrieval and the action
+    trace. The report narrates rank 1 (an iron-pickaxe episode); rank 0 is an
+    iron-ingot episode from the same start that fails in the same way."""
+    from src.agent import MemoryAgent, abstract_plan
+    r = main[main.config == config].sort_values("excess_steps", ascending=False).iloc[rank]
+    ps, seed = int(r.pool_seed), int(r.world_seed)
+    pool = build_pool(n_per_combo=int(r.n_per_combo), seed=ps)
+    env = CraftWorld()
+    text = make_episode(env, r.task_item, r.preset, seed=seed, rng=np.random.default_rng(seed))
+    state = env.get_state()
+    lines = [f"episode: config={config} task='{text}' preset={r.preset} world_seed={seed} pool_seed={ps}",
+             f"logged: steps={r.steps} oracle_steps={r.oracle_steps} excess={r.excess_steps} "
+             f"failed={r.failed_actions} replans={r.replans} fallback={r.oracle_fallback}",
+             f"start inventory: {state.inventory}; progress: {sorted(state.progress)}; nearby: {state.nearby_objects}",
+             "", f"top-{k} candidates of the first retrieval:"]
+    for i, c in enumerate(pool.retrieve(text, state, CONFIGS[config], k=k, rng=np.random.default_rng(seed + 1)), 1):
+        e = c.experience
+        comps = {n: round(v, 2) for n, v in c.components.items()}
+        lines.append(f" {i}. score={c.score:.3f} s_task={c.s_task:.2f} s_state={c.s_state:.2f} {comps} "
+                     f"'{e.task_text}' from {e.preset}; plan={abstract_plan(e.actions)}")
+    # replay with the inventory logged at every retrieval
+    env2 = CraftWorld()
+    text2 = make_episode(env2, r.task_item, r.preset, seed=seed, rng=np.random.default_rng(seed))
+    log = []
+    original = pool.retrieve
+    def logged_retrieve(*a, **kw):
+        log.append((env2.step_count, dict(env2.inventory)))
+        return original(*a, **kw)
+    pool.retrieve = logged_retrieve
+    try:
+        res = MemoryAgent(pool, CONFIGS[config], rng=np.random.default_rng(seed + 1)).run_episode(env2, text2, r.preset, seed)
+    finally:
+        pool.retrieve = original
+    lines += ["", f"replay: steps={res.steps} excess={res.excess_steps} failed={res.failed_actions} "
+                  f"replans={res.replans} fallback={res.oracle_fallback}",
+              "inventory at each retrieval (step, inventory):"] + [f"  {s}: {inv}" for s, inv in log]
+    lines += ["non-movement actions (action, ok):",
+              "  " + ", ".join(f"{a}{'' if ok else '(FAILED)'}" for a, ok in env2.action_log if a not in ("up", "down", "left", "right"))]
+    return "\n".join(lines)
+
+
+def timing(n: int = 2000) -> str:
+    """Wall-clock cost of the state components and of one full retrieval."""
+    import time
+    from src.state import state_components
+    from src.oracle import INVENTORY_PRESETS
+    env = CraftWorld()
+    s1 = env.reset("iron_pickaxe", seed=1)
+    s2 = env.reset("iron_pickaxe", initial_inventory=INVENTORY_PRESETS["has_furnace"], seed=2)
+    t0 = time.perf_counter()
+    for _ in range(n):
+        state_components(s1, s2)
+    per_candidate = (time.perf_counter() - t0) / n * 1e6
+    pool = build_pool(n_per_combo=4, seed=0)
+    text = make_episode(env, "iron_pickaxe", "has_furnace", seed=3)
+    state = env.get_state()
+    t0 = time.perf_counter()
+    for _ in range(200):
+        pool.retrieve(text, state, CONFIGS["B_state_aware"], k=1, rng=np.random.default_rng(0))
+    per_retrieval = (time.perf_counter() - t0) / 200 * 1e3
+    return (f"state components: {per_candidate:.1f} microseconds per candidate (mean of {n} calls)\n"
+            f"full retrieval over {len(pool)} experiences: {per_retrieval:.2f} ms")
+
+
+# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     pd.set_option("display.width", 220)
@@ -146,8 +229,10 @@ if __name__ == "__main__":
     pt = paired_tests(main)
     pt.to_csv(RESULTS / "paired_tests.csv", index=False)
     print("=== paired A vs B (excess steps) ===")
-    print(pt[pt.metric == "excess_steps"][["preset", "n", "diff", "paired_t", "p_paired_t", "p_wilcoxon",
-                                           "diff_pool0", "diff_pool1", "diff_pool2", "ci95_low", "ci95_high"]].to_string(index=False))
+    pool_cols = [c for c in pt.columns if c.startswith("diff_pool")]
+    cols = ["preset", "n", "diff", "paired_t", "p_paired_t", "p_wilcoxon", *pool_cols,
+            "ci95_worlds_low", "ci95_worlds_high", "ci95_pools_low", "ci95_pools_high"]
+    print(pt[pt.metric == "excess_steps"][cols].to_string(index=False, float_format=lambda v: f"{v:.3g}"))
     print("max p over all presets and metrics: paired t %.2e, wilcoxon %.2e" % (pt.p_paired_t.max(), pt.p_wilcoxon.max()))
 
     gap = gap_by_task_preset(main)
@@ -167,3 +252,12 @@ if __name__ == "__main__":
     same, cross = sim[sim.same_task].cosine, sim[~sim.same_task].cosine
     print(f"\nTF-IDF cosine: same-task phrasings {same.min():.2f}-{same.max():.2f}; "
           f"different tasks up to {cross.max():.2f}")
+
+    wc = "\n\n".join(f"### rank {i + 1} ###\n" + worst_case(main, rank=i) for i in range(2))
+    (RESULTS / "worst_case.txt").write_text(wc + "\n")
+    print("\n=== two worst state-aware episodes (results/worst_case.txt) ===")
+    print("\n".join(wc.splitlines()[:4]))
+
+    tm = timing()
+    (RESULTS / "timing.txt").write_text(tm + "\n")
+    print("\n" + tm)

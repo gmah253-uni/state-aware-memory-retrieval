@@ -1,0 +1,2 @@
+state components: 16.4 microseconds per candidate (mean of 2000 calls)
+full retrieval over 104 experiences: 4.36 ms
