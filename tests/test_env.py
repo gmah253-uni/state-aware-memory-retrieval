@@ -27,6 +27,16 @@ def test_every_task_solvable_from_every_preset():
                 assert tr.failed_actions == 0, "oracle should never take a failing action"
 
 
+def test_every_task_solvable_on_1000_worlds():
+    """Backs the claim in the report: from an empty inventory every task is solvable
+    on 1,000 random worlds (world generation tops up scarce resources)."""
+    env = CraftWorld()
+    for seed in range(1000):
+        for task in TASKS:
+            env.reset(task, seed=seed)
+            assert run_oracle(env).success, f"{task} unsolvable on world {seed}"
+
+
 def test_world_has_minimum_resources():
     env = CraftWorld()
     for seed in range(50):
