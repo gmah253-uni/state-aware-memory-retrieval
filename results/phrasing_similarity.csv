@@ -1,0 +1,191 @@
+phrase_a,phrase_b,same_task,cosine
+build a pickaxe from stone,build a pickaxe from iron,False,0.7688
+obtain an iron ingot,obtain an iron pickaxe,False,0.7614
+make a wooden pickaxe,obtain a wooden pickaxe,True,0.7142
+make a stone pickaxe,obtain a stone pickaxe,True,0.7086
+craft a wooden pickaxe,obtain a wooden pickaxe,True,0.6805
+craft a wooden pickaxe,make a wooden pickaxe,True,0.6776
+craft a stone pickaxe,obtain a stone pickaxe,True,0.6745
+craft a stone pickaxe,make a stone pickaxe,True,0.6716
+make an iron pickaxe,obtain an iron pickaxe,True,0.666
+craft an iron pickaxe,obtain an iron pickaxe,True,0.6298
+craft an iron pickaxe,make an iron pickaxe,True,0.6266
+build a furnace,obtain a furnace,True,0.6124
+craft a furnace,obtain a furnace,True,0.5985
+craft a wooden pickaxe,craft a stone pickaxe,False,0.5887
+obtain a stone pickaxe,build a pickaxe from stone,True,0.5863
+make a stone pickaxe,build a pickaxe from stone,True,0.5837
+obtain an iron ingot,produce an iron ingot,True,0.5788
+craft a furnace,build a furnace,True,0.5732
+make iron ingot,make an iron pickaxe,False,0.5604
+craft a stone pickaxe,build a pickaxe from stone,True,0.5557
+obtain an iron ingot,make iron ingot,True,0.5503
+make a wooden pickaxe,make a stone pickaxe,False,0.5466
+obtain a wooden pickaxe,obtain a stone pickaxe,False,0.5427
+smelt an iron ingot,obtain an iron ingot,True,0.5408
+craft a stone pickaxe,craft a furnace,False,0.5217
+craft a wooden pickaxe,craft a furnace,False,0.5171
+craft a stone pickaxe,craft an iron pickaxe,False,0.5125
+craft a wooden pickaxe,craft an iron pickaxe,False,0.5081
+build a furnace,build a pickaxe from iron,False,0.4744
+build a wood pickaxe,build a pickaxe from iron,False,0.4676
+obtain a stone pickaxe,obtain a furnace,False,0.4615
+obtain an iron ingot,make an iron pickaxe,False,0.4612
+make a stone pickaxe,make an iron pickaxe,False,0.4587
+obtain a wooden pickaxe,obtain a furnace,False,0.4571
+make a wooden pickaxe,make an iron pickaxe,False,0.4543
+obtain a stone pickaxe,obtain an iron pickaxe,False,0.4536
+obtain a wooden pickaxe,obtain an iron pickaxe,False,0.4492
+obtain an iron ingot,craft an iron pickaxe,False,0.436
+make iron ingot,produce an iron ingot,True,0.4354
+build a wood pickaxe,build a furnace,False,0.4286
+smelt an iron ingot,produce an iron ingot,True,0.4279
+build a pickaxe from stone,build a furnace,False,0.4277
+craft a furnace,craft an iron pickaxe,False,0.4234
+build a wood pickaxe,build a pickaxe from stone,False,0.4216
+make a furnace from cobblestone,obtain a furnace,True,0.4109
+smelt an iron ingot,make iron ingot,True,0.4068
+build a furnace,make a furnace from cobblestone,True,0.3936
+craft a furnace,make a furnace from cobblestone,True,0.3846
+produce an iron ingot,obtain an iron pickaxe,False,0.3667
+produce an iron ingot,make an iron pickaxe,False,0.3649
+obtain a furnace,obtain an iron pickaxe,False,0.3453
+make a furnace from cobblestone,build a pickaxe from iron,False,0.3453
+produce an iron ingot,craft an iron pickaxe,False,0.345
+smelt an iron ingot,obtain an iron pickaxe,False,0.3426
+smelt an iron ingot,make an iron pickaxe,False,0.3409
+make a stone pickaxe,make iron ingot,False,0.3286
+make a wooden pickaxe,make iron ingot,False,0.3254
+smelt an iron ingot,craft an iron pickaxe,False,0.3224
+build a pickaxe from stone,make a furnace from cobblestone,False,0.3114
+obtain a furnace,obtain an iron ingot,False,0.3112
+obtain an iron pickaxe,build a pickaxe from iron,True,0.305
+make an iron pickaxe,build a pickaxe from iron,True,0.3034
+make a stone pickaxe,make a furnace from cobblestone,False,0.3016
+make a wooden pickaxe,make a furnace from cobblestone,False,0.2987
+craft an iron pickaxe,build a pickaxe from iron,True,0.2869
+obtain a stone pickaxe,obtain an iron ingot,False,0.2783
+obtain a wooden pickaxe,obtain an iron ingot,False,0.2756
+make a wooden pickaxe,obtain a stone pickaxe,False,0.256
+obtain a wooden pickaxe,make a stone pickaxe,False,0.256
+craft a wooden pickaxe,obtain a stone pickaxe,False,0.244
+obtain a wooden pickaxe,craft a stone pickaxe,False,0.2437
+craft a wooden pickaxe,make a stone pickaxe,False,0.2429
+make a wooden pickaxe,craft a stone pickaxe,False,0.2427
+make a furnace from cobblestone,make iron ingot,False,0.2372
+obtain a stone pickaxe,build a pickaxe from iron,False,0.2372
+make a stone pickaxe,build a pickaxe from iron,False,0.2362
+obtain a wooden pickaxe,build a pickaxe from iron,False,0.2349
+make a wooden pickaxe,build a pickaxe from iron,False,0.2339
+make a furnace from cobblestone,make an iron pickaxe,False,0.2275
+craft a stone pickaxe,build a pickaxe from iron,False,0.2249
+craft a wooden pickaxe,build a pickaxe from iron,False,0.2229
+build a wood pickaxe,obtain a stone pickaxe,False,0.2143
+build a wood pickaxe,make a stone pickaxe,False,0.2134
+obtain a wooden pickaxe,build a wood pickaxe,True,0.2123
+obtain a wooden pickaxe,build a pickaxe from stone,False,0.2118
+make a wooden pickaxe,build a wood pickaxe,True,0.2114
+make a wooden pickaxe,build a pickaxe from stone,False,0.2109
+make iron ingot,obtain an iron pickaxe,False,0.2099
+build a wood pickaxe,craft a stone pickaxe,False,0.2032
+craft a wooden pickaxe,build a wood pickaxe,True,0.2014
+craft a wooden pickaxe,build a pickaxe from stone,False,0.201
+make iron ingot,craft an iron pickaxe,False,0.1974
+make iron ingot,build a pickaxe from iron,False,0.1791
+obtain an iron ingot,build a pickaxe from iron,False,0.1556
+make a stone pickaxe,obtain an iron pickaxe,False,0.1442
+obtain a stone pickaxe,make an iron pickaxe,False,0.1441
+make a wooden pickaxe,obtain an iron pickaxe,False,0.1428
+obtain a wooden pickaxe,make an iron pickaxe,False,0.1427
+make a stone pickaxe,obtain a furnace,False,0.1385
+craft a stone pickaxe,obtain an iron pickaxe,False,0.1373
+make a wooden pickaxe,obtain a furnace,False,0.1372
+craft a stone pickaxe,make an iron pickaxe,False,0.1366
+obtain a stone pickaxe,craft an iron pickaxe,False,0.1363
+craft a wooden pickaxe,obtain an iron pickaxe,False,0.1361
+make a stone pickaxe,craft an iron pickaxe,False,0.1357
+craft a wooden pickaxe,make an iron pickaxe,False,0.1354
+obtain a wooden pickaxe,craft an iron pickaxe,False,0.135
+make a wooden pickaxe,craft an iron pickaxe,False,0.1344
+obtain a stone pickaxe,build a furnace,False,0.1332
+make a stone pickaxe,build a furnace,False,0.1326
+obtain a wooden pickaxe,build a furnace,False,0.1319
+craft a stone pickaxe,obtain a furnace,False,0.1318
+make a wooden pickaxe,build a furnace,False,0.1314
+craft a wooden pickaxe,obtain a furnace,False,0.1307
+obtain a stone pickaxe,craft a furnace,False,0.1302
+make a stone pickaxe,craft a furnace,False,0.1296
+obtain a wooden pickaxe,craft a furnace,False,0.1289
+make a wooden pickaxe,craft a furnace,False,0.1284
+obtain a furnace,build a pickaxe from iron,False,0.1271
+craft a stone pickaxe,build a furnace,False,0.1263
+craft a wooden pickaxe,build a furnace,False,0.1252
+produce an iron ingot,build a pickaxe from iron,False,0.1231
+build a wood pickaxe,obtain an iron pickaxe,False,0.1196
+build a pickaxe from stone,obtain an iron pickaxe,False,0.1193
+build a wood pickaxe,make an iron pickaxe,False,0.119
+craft a furnace,build a pickaxe from iron,False,0.1189
+build a pickaxe from stone,make an iron pickaxe,False,0.1187
+smelt an iron ingot,build a pickaxe from iron,False,0.115
+build a wood pickaxe,obtain a furnace,False,0.1148
+build a pickaxe from stone,obtain a furnace,False,0.1146
+build a wood pickaxe,craft an iron pickaxe,False,0.1125
+build a pickaxe from stone,craft an iron pickaxe,False,0.1123
+build a wood pickaxe,craft a furnace,False,0.1075
+build a pickaxe from stone,craft a furnace,False,0.1072
+obtain a stone pickaxe,make a furnace from cobblestone,False,0.0894
+obtain a wooden pickaxe,make a furnace from cobblestone,False,0.0885
+craft a stone pickaxe,make a furnace from cobblestone,False,0.0847
+craft a wooden pickaxe,make a furnace from cobblestone,False,0.084
+build a wood pickaxe,make a furnace from cobblestone,False,0.0738
+craft a wooden pickaxe,smelt an iron ingot,False,0.0
+craft a wooden pickaxe,make iron ingot,False,0.0
+make a wooden pickaxe,smelt an iron ingot,False,0.0
+obtain a wooden pickaxe,smelt an iron ingot,False,0.0
+obtain a wooden pickaxe,produce an iron ingot,False,0.0
+obtain a wooden pickaxe,make iron ingot,False,0.0
+make a wooden pickaxe,produce an iron ingot,False,0.0
+make a wooden pickaxe,obtain an iron ingot,False,0.0
+craft a wooden pickaxe,obtain an iron ingot,False,0.0
+craft a wooden pickaxe,produce an iron ingot,False,0.0
+build a wood pickaxe,smelt an iron ingot,False,0.0
+build a wood pickaxe,produce an iron ingot,False,0.0
+build a wood pickaxe,make iron ingot,False,0.0
+build a wood pickaxe,obtain an iron ingot,False,0.0
+craft a stone pickaxe,produce an iron ingot,False,0.0
+craft a stone pickaxe,make iron ingot,False,0.0
+craft a stone pickaxe,obtain an iron ingot,False,0.0
+make a stone pickaxe,smelt an iron ingot,False,0.0
+make a stone pickaxe,obtain an iron ingot,False,0.0
+build a pickaxe from stone,produce an iron ingot,False,0.0
+build a pickaxe from stone,make iron ingot,False,0.0
+build a pickaxe from stone,smelt an iron ingot,False,0.0
+build a pickaxe from stone,obtain an iron ingot,False,0.0
+make a stone pickaxe,produce an iron ingot,False,0.0
+obtain a stone pickaxe,smelt an iron ingot,False,0.0
+obtain a stone pickaxe,produce an iron ingot,False,0.0
+obtain a stone pickaxe,make iron ingot,False,0.0
+craft a stone pickaxe,smelt an iron ingot,False,0.0
+obtain a furnace,produce an iron ingot,False,0.0
+obtain a furnace,smelt an iron ingot,False,0.0
+make a furnace from cobblestone,obtain an iron pickaxe,False,0.0
+make a furnace from cobblestone,craft an iron pickaxe,False,0.0
+obtain a furnace,make iron ingot,False,0.0
+build a furnace,produce an iron ingot,False,0.0
+build a furnace,craft an iron pickaxe,False,0.0
+craft a furnace,smelt an iron ingot,False,0.0
+craft a furnace,obtain an iron ingot,False,0.0
+craft a furnace,make iron ingot,False,0.0
+craft a furnace,obtain an iron pickaxe,False,0.0
+craft a furnace,make an iron pickaxe,False,0.0
+make a furnace from cobblestone,smelt an iron ingot,False,0.0
+make a furnace from cobblestone,obtain an iron ingot,False,0.0
+make a furnace from cobblestone,produce an iron ingot,False,0.0
+build a furnace,obtain an iron pickaxe,False,0.0
+build a furnace,make an iron pickaxe,False,0.0
+craft a furnace,produce an iron ingot,False,0.0
+build a furnace,smelt an iron ingot,False,0.0
+build a furnace,obtain an iron ingot,False,0.0
+build a furnace,make iron ingot,False,0.0
+obtain a furnace,craft an iron pickaxe,False,0.0
+obtain a furnace,make an iron pickaxe,False,0.0

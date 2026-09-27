@@ -1,0 +1,6 @@
+task_item,empty,has_wood,has_planks,has_wood_pick,has_stone_pick,has_furnace
+furnace,3.42,2.15,4.18,4.65,8.38,
+iron_ingot,4.52,3.28,5.02,4.45,14.18,21.33
+iron_pickaxe,1.92,4.78,-0.67,2.9,11.43,23.3
+stone_pickaxe,2.13,2.0,4.23,3.53,,
+wooden_pickaxe,2.83,4.63,3.0,,0.32,3.17

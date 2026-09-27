@@ -5,8 +5,8 @@ One-command reproduction of every number and figure in the report.
     python scripts/run_all.py --quick    # ~10 s smoke run in quick_run/ (results/ untouched)
 
 Steps: src.experiments (main grid, beta sweep, pool-size sweep, summary
-statistics, A-vs-B tests) -> src.plots (fig1-fig5) -> src.render --figure
-(fig0, the environment figure). Run the property tests separately with
+statistics, A-vs-B tests) -> src.plots (fig1-fig5) -> src.analysis (paired tests,
+retrieval categories) -> src.render --figure (fig0, the environment figure). Run the property tests separately with
 `python -m pytest`.
 """
 
@@ -38,10 +38,12 @@ def main() -> None:
         cwd.mkdir(exist_ok=True)
         run("src.experiments", "--quick", cwd=cwd)
         run("src.plots", cwd=cwd)
+        run("src.analysis", cwd=cwd)
     else:
         cwd = ROOT
         run("src.experiments", cwd=cwd)
         run("src.plots", cwd=cwd)
+        run("src.analysis", cwd=cwd)
         run("src.render", "--figure", cwd=cwd)
     print(f"\ndone: results in {cwd / 'results'}, figures in {cwd / 'figures'}")
 
