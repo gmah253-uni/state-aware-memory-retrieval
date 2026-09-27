@@ -1,6 +1,6 @@
 # State-Aware Memory Retrieval for Long-Horizon Planning
 
-Code for the CS764 project *Reliability-aware Planning with Optimus-style Memory:
+*Reliability-aware Planning with Optimus-style Memory:
 State-Aware Memory Retrieval for Long-Horizon Planning* (G. Mahale, J. Lazarus).
 
 We test whether adding **state similarity** to **task similarity** when retrieving
