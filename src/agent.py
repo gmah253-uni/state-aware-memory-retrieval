@@ -13,9 +13,12 @@ Loop, per episode:
      already satisfied is still executed. This is deliberate - it isolates the
      effect of retrieval quality, which is what the experiment is about.
   4. If a subgoal fails (precondition unmet) or the plan ends without success,
-     a REPLANNING EVENT occurs: re-retrieve using the *current* state, excluding
-     experiences already tried. After `max_replans`, fall back to the oracle so
-     every episode terminates with a well-defined outcome.
+     the failed plan is counted as a REPLANNING EVENT (`replans`). While
+     replans <= max_replans the agent re-retrieves using the *current* state,
+     excluding experiences already tried; once the counter exceeds max_replans
+     (with max_replans=3: after the FOURTH failed plan) it falls back to the
+     oracle so every episode terminates with a well-defined outcome. Fallback
+     episodes therefore log replans = max_replans + 1.
 
 Metrics logged per episode (as listed in the proposal's experimental plan):
   success, steps, failed_actions (redundant), replans, excess_steps
