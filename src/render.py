@@ -2,6 +2,7 @@
 Rendering utilities for CraftWorld.
 
     python -m src.render --figure   # figures/fig0_craftworld.png   (report figure)
+    python -m src.render --slide-figure   # figures/fig0_craftworld_slide.png (two large panels for slides)
     python -m src.render --gif      # figures/episode_A_vs_B.gif    (presentation)
     python -m src.render            # both
     python -m src.render --task stone_pickaxe --preset has_wood_pick --seed 500010 --pool-seed 0
@@ -245,6 +246,28 @@ def make_figure(env_a: RecordingWorld, env_b: RecordingWorld, text: str, preset:
     print("wrote", out)
 
 
+
+def make_slide_figure(env_a: RecordingWorld, out: Path) -> None:
+    """Two large panels for a slide: the world at the start of the episode and the
+    agent's 5x5 local view, without the text panel of the report figure."""
+    f0 = env_a.frames[0]
+    start = RecordingWorld()
+    start.grid, start.quantity, start.pos = f0.grid.copy(), f0.quantity.copy(), f0.pos
+    state = start.get_state()
+    fig = plt.figure(figsize=(9.6, 4.8))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 0.62], wspace=0.18)
+    ax0 = fig.add_subplot(gs[0, 0])
+    ax1 = fig.add_subplot(gs[0, 1])
+    draw_world(ax0, f0.grid, f0.quantity, f0.pos, title="(a) CraftWorld at the start of the episode")
+    draw_local_view(ax1, state.local_view, title="(b) The agent's 5\u00d75 local view")
+    ax0.text(0.5, -0.04, "T tree \u00b7 S stone \u00b7 I iron \u00b7 number = units left \u00b7 dashed = view window \u00b7 disc = agent",
+             transform=ax0.transAxes, ha="center", va="top", fontsize=7, color="#555555")
+    ax1.text(0.5, -0.06, "hatched = beyond the world edge", transform=ax1.transAxes, ha="center",
+             va="top", fontsize=7, color="#555555")
+    fig.savefig(out, dpi=250, bbox_inches="tight")
+    plt.close(fig)
+    print("wrote", out)
+
 # ---------------------------------------------------------------------------
 # Animated GIF: A and B side by side from the identical start state
 # ---------------------------------------------------------------------------
@@ -318,12 +341,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--figure", action="store_true", help="write figures/fig0_craftworld.png")
     ap.add_argument("--gif", action="store_true", help="write figures/episode_A_vs_B.gif")
+    ap.add_argument("--slide-figure", action="store_true", help="write figures/fig0_craftworld_slide.png")
     ap.add_argument("--task", default="iron_pickaxe")
     ap.add_argument("--preset", default="has_furnace")
     ap.add_argument("--seed", type=int, help="test-world seed (default: picked from results/main.csv)")
     ap.add_argument("--pool-seed", type=int, help="experience-pool seed (default: picked with --seed)")
     args = ap.parse_args()
-    if not (args.figure or args.gif):
+    if not (args.figure or args.gif or args.slide_figure):
         args.figure = args.gif = True
 
     ps, ws = pick_example(args.task, args.preset)
@@ -343,6 +367,8 @@ def main() -> None:
         make_figure(env_a, env_b, text, args.preset, res_a, res_b, FIGURES / "fig0_craftworld.png")
     if args.gif:
         make_gif(env_a, env_b, text, args.preset, FIGURES / "episode_A_vs_B.gif")
+    if args.slide_figure:
+        make_slide_figure(env_a, FIGURES / "fig0_craftworld_slide.png")
 
 
 if __name__ == "__main__":
